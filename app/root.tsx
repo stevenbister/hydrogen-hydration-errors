@@ -1,34 +1,35 @@
 import {
-  defer,
-  type LinksFunction,
-  type LoaderFunctionArgs,
-  type AppLoadContext,
-  type MetaArgs,
-} from '@shopify/remix-oxygen';
-import {
-  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-  useRouteLoaderData,
+  isRouteErrorResponse,
   useRouteError,
+  useRouteLoaderData,
   type ShouldRevalidateFunction,
 } from '@remix-run/react';
 import {
-  useNonce,
   Analytics,
-  getShopAnalytics,
+  Script,
   getSeoMeta,
+  getShopAnalytics,
+  useNonce,
   type SeoConfig,
 } from '@shopify/hydrogen';
+import {
+  defer,
+  type AppLoadContext,
+  type LinksFunction,
+  type LoaderFunctionArgs,
+  type MetaArgs,
+} from '@shopify/remix-oxygen';
 import invariant from 'tiny-invariant';
 
-import {PageLayout} from '~/components/PageLayout';
+import favicon from '~/assets/favicon.svg';
 import {GenericError} from '~/components/GenericError';
 import {NotFound} from '~/components/NotFound';
-import favicon from '~/assets/favicon.svg';
+import {PageLayout} from '~/components/PageLayout';
 import {seoPayload} from '~/lib/seo.server';
 import styles from '~/styles/app.css?url';
 
@@ -143,6 +144,17 @@ function Layout({children}: {children?: React.ReactNode}) {
         <meta name="msvalidate.01" content="A352E6A0AF9A652267361BBB572B8468" />
         <Meta />
         <Links />
+
+        <Script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM_SCRIPT_HERE');`,
+          }}
+          nonce={nonce}
+        />
       </head>
       <body>
         {data ? (
